@@ -23,6 +23,7 @@ namespace Minesweeper
         public MainWindow()
         {
             InitializeComponent();
+            Main1.Content = new Mainpage();
         }
     }
 }
