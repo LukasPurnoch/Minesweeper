@@ -26,7 +26,7 @@ namespace Minesweeper
         public int yy = 0;
 
         public double posun_x = 0;
-        public double posun_y = 19;
+        public double posun_y = 0;
 
         public Mainpage()
         {
@@ -34,8 +34,6 @@ namespace Minesweeper
 
             x = 11;
             y = 11;
-
-
 
             FieldGen(x, y);
         }
@@ -60,7 +58,7 @@ namespace Minesweeper
 
                     posun_x += 19d;
                 }
-                
+                posun_y += 19d;
             }
         }
     }
