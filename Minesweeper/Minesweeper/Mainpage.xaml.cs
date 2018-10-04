@@ -23,10 +23,8 @@ namespace Minesweeper
         public int x = 0;
         public int y = 0;
 
-        public int yy = 0;
-
-        public double row = 0;
-        public double column = 0;
+        public int row = 0;
+        public int column = 0;
 
         public Mainpage()
         {
@@ -40,7 +38,31 @@ namespace Minesweeper
 
         public void FieldGen(int x, int y)
         {
-            
+            for (int i = 0; i <= y; i++)     //Rows
+            {
+                for (int o = 0; o <= x; o++)     //Columns
+                {
+                    Button newBtn = new Button();
+                    newBtn.Name = "Button" + i.ToString();
+
+                    ColumnDefinition newCol = new ColumnDefinition();
+                    newCol.Width = new GridLength(30, GridUnitType.Pixel);
+                    PlayGrid.ColumnDefinitions.Add(newCol);
+
+                    RowDefinition newRow = new RowDefinition();
+                    newRow.Height = new GridLength(30, GridUnitType.Pixel);
+                    PlayGrid.RowDefinitions.Add(newRow);
+
+                    PlayGrid.Children.Add(newBtn);
+
+                    Grid.SetColumn(newBtn, o);
+                    Grid.SetRow(newBtn, i);
+                    
+                }
+
+
+
+            }
         }
     }
 }
