@@ -72,8 +72,8 @@ namespace Minesweeper
 
             for (int i = 0; i <= MineCount; i++)
             {   
-                MINE_pos_y = mine_pos.Next(0, x-1);
-                MINE_pos_x = mine_pos.Next(0, x-1);
+                MINE_pos_y = mine_pos.Next(0, x-2);
+                MINE_pos_x = mine_pos.Next(0, x-2);
 
                 Button newBtnMine = new Button();
                 newBtnMine.Content = "MINE";
@@ -84,13 +84,10 @@ namespace Minesweeper
 
                 Grid.SetColumn(newBtnMine, MINE_pos_x);
                 Grid.SetRow(newBtnMine, MINE_pos_y);
-
-                int deb = 0;
-                deb += 1;
             }
         }
 
-        void newBtn_BLIND_Click(object sender, RoutedEventArgs e)
+        private void newBtn_BLIND_Click(object sender, RoutedEventArgs e)
         {
             
         }
