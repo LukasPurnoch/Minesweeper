@@ -25,8 +25,8 @@ namespace Minesweeper
 
         public int yy = 0;
 
-        public double posun_x = 0;
-        public double posun_y = 0;
+        public double row = 0;
+        public double column = 0;
 
         public Mainpage()
         {
@@ -40,26 +40,7 @@ namespace Minesweeper
 
         public void FieldGen(int x, int y)
         {
-            for (int u = 0; u < y; u++)
-            {            
-                for (int i = 0; i < x; i++)
-                {
-                    Button newBtn = new Button();
-
-                    newBtn.Content = i.ToString();
-                    newBtn.Name = "Button" + i.ToString();
-                    newBtn.Width = 20;
-                    newBtn.Height = 20;
-
-                    Field.Children.Add(newBtn);
-
-                    newBtn.SetValue(Canvas.LeftProperty, posun_x);
-                    newBtn.SetValue(Canvas.TopProperty, posun_y);
-
-                    posun_x += 19d;
-                }
-                posun_y += 19d;
-            }
+            
         }
     }
 }
