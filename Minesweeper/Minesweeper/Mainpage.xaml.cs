@@ -20,6 +20,8 @@ namespace Minesweeper
     /// </summary>
     public partial class Mainpage : Page
     {
+        public int MineCounterNumber = 0;
+
         public int x = 0;
         public int y = 0;
 
@@ -30,11 +32,12 @@ namespace Minesweeper
         {
             InitializeComponent();
 
-            x = 11;
-            y = 11;
+            x = 6;
+            y = 6;
 
             FieldGen(x, y);
-            MineGeneration(10);
+            MineGeneration(3);
+            NumberGen(x, y);
         }
 
         public void FieldGen(int x, int y)
@@ -45,7 +48,7 @@ namespace Minesweeper
                 {
                     Button newBtn = new Button();
                     newBtn.Content = i + "-" + o;
-                    newBtn.Name = "Button" + i.ToString();
+                    newBtn.Name = "s";      //název podle označení pozice
                     newBtn.Click += new RoutedEventHandler(newBtn_BLIND_Click);
 
                     ColumnDefinition newCol = new ColumnDefinition();
@@ -64,7 +67,7 @@ namespace Minesweeper
             }
         }
 
-        public void MineGeneration(int MineCount)
+        public void MineGeneration(int MineCount) //při tvorbě najít v elementech původního generování button se stejnou pozicí a předělat na minu
         {
             Random mine_pos = new Random();
             int MINE_pos_y;
@@ -72,24 +75,61 @@ namespace Minesweeper
 
             for (int i = 0; i <= MineCount; i++)
             {   
-                MINE_pos_y = mine_pos.Next(0, x-2);
-                MINE_pos_x = mine_pos.Next(0, x-2);
+                MINE_pos_y = mine_pos.Next(0, x + 1);
+                MINE_pos_x = mine_pos.Next(0, x + 1);
 
-                Button newBtnMine = new Button();
+                foreach (UIElement ui in PlayGrid.Children)
+                {
+                    Grid.GetRow(ui) 
+                }
+
+                /*Button newBtnMine = new Button();
                 newBtnMine.Content = "MINE";
                 newBtnMine.Name = "Mine" + i.ToString();
                 newBtnMine.Background = Brushes.Red;
+
+                newBtnMine.Click += new RoutedEventHandler(newBtnMine_MINE_Click);
 
                 PlayGrid.Children.Add(newBtnMine);
 
                 Grid.SetColumn(newBtnMine, MINE_pos_x);
                 Grid.SetRow(newBtnMine, MINE_pos_y);
+
+                MineCounterNumber += 1;
+
+                MineCounter.Content = MineCounterNumber.ToString();*/
             }
         }
 
+        public void NumberGen(int x, int y)
+        {
+            foreach (UIElement ui in PlayGrid.Children)
+            {
+                for (int i = 0; i <= y; i++)    //Rows
+                {
+                    for (int o = 0; o <= x; o++)    //Columns
+                    {
+                        if (Grid.GetRow(ui) == i && Grid.GetColumn(ui) == o)   //Dynamicky kontrolovat pozice podle názvu
+                        {
+                            MineCounter.Content = i + "-" + o;
+                        }
+                    }
+                }
+            }   
+        }   //Waiting till the minegen will be refactored
+
         private void newBtn_BLIND_Click(object sender, RoutedEventArgs e)
         {
-            
+            //MineCounter.Content = "BLANK";
+
+            string content = (sender as Button).Name.ToString();
+
+            MineCounter.Content = content;
+        }
+
+        private void newBtnMine_MINE_Click(object sender, RoutedEventArgs e)
+        {
+            MineCounter.Content = "MINE";
         }
     }
 }
