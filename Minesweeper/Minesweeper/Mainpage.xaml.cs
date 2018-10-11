@@ -24,8 +24,7 @@ namespace Minesweeper
         List<int> Random_y_row = new List<int>();
         List<int> Random_x_column = new List<int>();
 
-        public int var1 = 0;
-        public static int[,] usedPos = new int[24,24];
+        public int score = 0;
 
         public int MineCounterNumber = 0;
 
@@ -57,7 +56,7 @@ namespace Minesweeper
 
             for (int i = 0; i < mines; i++)
             {
-                MINE_pos_y = mine_pos.Next(1, y-1);
+                MINE_pos_y = mine_pos.Next(1, y-2);
                 MINE_pos_x = mine_pos.Next(1, x-1);                
 
                 Random_y_row.Add(MINE_pos_y);
@@ -89,9 +88,9 @@ namespace Minesweeper
                     {
                         Button newBtnMine = new Button();
                         newBtnMine.Background = Brushes.Red;
-                        newBtnMine.Content = "MINE";
+                        //newBtnMine.Content = "MINE";
                         newBtnMine.Name = "Mine";      //název podle označení pozice
-                        newBtnMine.Click += new RoutedEventHandler(newBtn_BLIND_Click);
+                        newBtnMine.Click += new RoutedEventHandler(newBtnMine_MINE_Click);
 
                         ColumnDefinition newColMine = new ColumnDefinition();
                         newColMine.Width = new GridLength(35, GridUnitType.Pixel);
@@ -110,15 +109,16 @@ namespace Minesweeper
                         {
                             mineAddCounter += 1;
                         }
-
-
+                    }
+                    else
+                    {
                         int listTemporary_X = 0;
                         int listTemporary_Y = 0;
 
                         for (int q = 0; q < mines; q++)
                         {
                             for (int p = 0; p < 3; p++) //Row
-                            {                                
+                            {
                                 if (p == 0)
                                 {
                                     int whileTemp = 0;
@@ -127,21 +127,39 @@ namespace Minesweeper
                                     {
                                         if (whileTemp == 0)
                                         {
+                                            
                                             Button new1 = new Button();
                                             new1.Background = Brushes.Blue;
-                                            new1.Name = "one";
+                                            new1.Content = " ";
                                             new1.Click += new RoutedEventHandler(new1_Click);
 
                                             Grid.SetColumn(new1, Random_x_column[listTemporary_X] - 1);    //X
                                             Grid.SetRow(new1, Random_y_row[listTemporary_Y] - 1);          //Y
 
                                             PlayGrid.Children.Add(new1);
+
+                                            /*int whileTemp2 = 0;
+
+                                            while (whileTemp2 < mines)
+                                            {
+                                                if (q > 0 && Random_x_column[listTemporary_X - 1] == Random_x_column[whileTemp2] && Random_y_row[listTemporary_Y - 1] == Random_y_row[whileTemp2])
+                                                {
+
+                                                }
+                                                else
+                                                {
+                                                    
+                                                }
+
+                                                whileTemp2 += 1;
+                                            }*/
+
                                         }
                                         if (whileTemp == 1)
                                         {
                                             Button new1 = new Button();
                                             new1.Background = Brushes.Blue;
-                                            new1.Name = "one";
+                                            new1.Content = " ";
                                             new1.Click += new RoutedEventHandler(new1_Click);
 
                                             Grid.SetColumn(new1, Random_x_column[listTemporary_X]);    //X
@@ -153,7 +171,7 @@ namespace Minesweeper
                                         {
                                             Button new1 = new Button();
                                             new1.Background = Brushes.Blue;
-                                            new1.Name = "one";
+                                            new1.Content = " ";
                                             new1.Click += new RoutedEventHandler(new1_Click);
 
                                             Grid.SetColumn(new1, Random_x_column[listTemporary_X] + 1);    //X
@@ -162,7 +180,7 @@ namespace Minesweeper
                                             PlayGrid.Children.Add(new1);
                                         }
 
-                                        whileTemp += 1; 
+                                        whileTemp += 1;
                                     }
                                 }
 
@@ -252,14 +270,10 @@ namespace Minesweeper
                             listTemporary_X += 1;
                             listTemporary_Y += 1;
                         }
-                        
 
-                    }
-                    else
-                    {
                         Button newBtn = new Button();
                         newBtn.Content = i + "-" + o;
-                        newBtn.Name = "Blank";      //název podle označení pozice
+                        //newBtn.Name = "Blank";      //název podle označení pozice
                         newBtn.Click += new RoutedEventHandler(newBtn_BLIND_Click);
 
                         ColumnDefinition newCol = new ColumnDefinition();
@@ -280,71 +294,41 @@ namespace Minesweeper
             }
         }
 
-        public void MineGeneration(int MineCount) //při tvorbě najít v elementech původní generování button se stejnou pozicí a předělat na minu
-        {
-            Random mine_pos = new Random();
-            int MINE_pos_y;
-            int MINE_pos_x;
-
-            for (int i = 0; i <= MineCount; i++)
-            {   
-                MINE_pos_y = mine_pos.Next(0, x + 1);
-                MINE_pos_x = mine_pos.Next(0, x + 1);
-                                
-                Button newBtnMine = new Button();
-                newBtnMine.Content = "MINE";
-                newBtnMine.Name = "Mine" + i.ToString();
-                newBtnMine.Background = Brushes.Red;
-
-                newBtnMine.Click += new RoutedEventHandler(newBtnMine_MINE_Click);
-
-                PlayGrid.Children.Add(newBtnMine);
-
-                Grid.SetColumn(newBtnMine, MINE_pos_x);
-                Grid.SetRow(newBtnMine, MINE_pos_y);
-
-                MineCounterNumber += 1;
-
-                MineCounter.Content = MineCounterNumber.ToString();
-            }
-        }
-
-        public void NumberGen(int x, int y)
-        {
-            foreach (UIElement ui in PlayGrid.Children)
-            {
-                for (int i = 0; i <= y; i++)    //Rows
-                {
-                    for (int o = 0; o <= x; o++)    //Columns
-                    {
-                        if (Grid.GetRow(ui) == i && Grid.GetColumn(ui) == o)   //Dynamicky kontrolovat pozice podle názvu
-                        {
-                            
-                            
-                            //MineCounter.Content = i + "-" + o;
-                        }
-                    }
-                }
-            }   
-        }   //Waiting till the minegen will be refactored
-
         private void newBtn_BLIND_Click(object sender, RoutedEventArgs e)
         {
-            //MineCounter.Content = "BLANK";
+            Button btn = sender as Button;
 
-            string content = (sender as Button).Content.ToString();
+            if (btn.Content.ToString() == "0")
+            {
 
-            MineCounter.Content = content;
+            }
+            else
+            {
+                score += 1;
+                btn.Content = 0;
+            }            
+
+            Score.Content = score;
         }
 
         private void newBtnMine_MINE_Click(object sender, RoutedEventArgs e)
         {
-            MineCounter.Content = "MINE";
+            Button btn = sender as Button;
+            btn.Content = "💣";
+
+            MessageBoxResult result = MessageBox.Show("Game over", "Confirmation", MessageBoxButton.OK, MessageBoxImage.Question);
+
+            if (result == MessageBoxResult.OK)
+            {
+                Application.Current.Shutdown();
+            }
         }
 
         private void new1_Click(object sender, RoutedEventArgs e)
         {
-            string content = (sender as Button).Content.ToString();
+            Button btn = sender as Button;
+
+            btn.Content = 1;
         }
     }
 }
